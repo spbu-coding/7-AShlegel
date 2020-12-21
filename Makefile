@@ -9,12 +9,7 @@ EXEC = $(BUILD_DIR)/$(NAME)
 SOURCES = $(SOURCE_DIR)/$(NAME).c
 OBJECTS = $(EXEC).o
 
-TESTS_IN = $(sort $(wildcard $(TEST_DIR)/*.in))
-TESTS_NAMES = $(TESTS_IN:$(TEST_DIR)/%.in=%)
-TESTS_OUT = $(sort $(wildcard $(TEST_DIR)/*.out))
-SORT_OUT = $(TESTS_OUT:$(TEST_DIR)/%=$(BUILD_DIR)/%)
-
-.PHONY: clean $(BUILD_DIR) all
+.PHONY: clean $(BUILD_DIR) all check
 
 all: $(BUILD_DIR) $(EXEC) check
 
@@ -32,16 +27,25 @@ clean:
 
 #--------------------------------------------------------------------------------------
 
-check: $(EXEC)
-	test_check=0 ; \
+TESTS_IN = $(sort $(wildcard $(TEST_DIR)/*.in))
+TESTS_NAMES = $(TESTS_IN:$(TEST_DIR)/%.in=%)
+TESTS_OUT = $(sort $(wildcard $(TEST_DIR)/*.out))
+SORT_OUT = $(TESTS_OUT:$(TEST_DIR)/%=$(BUILD_DIR)/%)
+
+check: $(BUILD_DIR)/log
+	@exit $$(cat $<)
+
+$(BUILD_DIR)/log: $(EXEC) $(TESTS_IN) $(TESTS_OUT)
+	@test_check=0 ; \
 	for test in $(TESTS_NAMES) ; do \
 	  ./$< $(TEST_DIR)/$$test.in > $(BUILD_DIR)/$$test.out ; \
-	  if cmp -s $(BUILD_DIR)/$$test.out $(TESTS_DIR)/$$test.out ;  then \
+	  if cmp -s $(BUILD_DIR)/$$test.out $(TEST_DIR)/$$test.out ;  then \
 	  	echo test $$test passed ; \
 	  else \
 	    echo test $$test failed ; \
 	    test_check=1 ; \
 	  fi \
 	done ;\
-	exit $$test_check ; \
+	echo $$test_check > $@
+
 
