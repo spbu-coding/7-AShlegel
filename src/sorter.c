@@ -75,7 +75,7 @@ int read_file(const char *filename, vector *v) {
 
         str[str_len] = '\0';
 
-        for (int i = (int) buf_len - 1; i >= 0; i--){
+        for (int i = (int) buf_len - 1; i >= 0; i--) {
             char c = buf[i];
             if (is_not_waste(c)) str[--str_len] = c;
         }
@@ -90,9 +90,9 @@ int read_file(const char *filename, vector *v) {
 
 // ------------------------------------------------------------------------------------------------------------ Print //
 
-void print_first_str(vector str){
+void print_first_str(vector str) {
     size_t size = MAX_NUM_SRT_PRINT < str.total ? MAX_NUM_SRT_PRINT : str.total;
-    for (size_t i = 0; i < size; i++){
+    for (size_t i = 0; i < size; i++) {
         printf("%s\n", str.items[i]);
     }
 }
@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
     if (argc == 2) {
         vector str_arr;
         if (!read_file(argv[1], &str_arr)) {
-            qsort(str_arr.items, str_arr.total, sizeof(char*), str_compare);
+            qsort(str_arr.items, str_arr.total, sizeof(char *), str_compare);
             print_first_str(str_arr);
             vector_free(&str_arr);
             return 0;

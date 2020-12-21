@@ -9,6 +9,11 @@ EXEC = $(BUILD_DIR)/$(NAME)
 SOURCES = $(SOURCE_DIR)/$(NAME).c
 OBJECTS = $(EXEC).o
 
+TESTS_IN = $(sort $(wildcard $(TEST_DIR)/*.in))
+TESTS_NAMES = $(TESTS_IN:$(TEST_DIR)/%.in=%)
+TESTS_OUT = $(sort $(wildcard $(TEST_DIR)/*.out))
+SORT_OUT = $(TESTS_OUT:$(TEST_DIR)/%=$(BUILD_DIR)/%)
+
 .PHONY: clean $(BUILD_DIR) all check
 
 all: $(BUILD_DIR) $(EXEC) check
@@ -25,13 +30,6 @@ $(BUILD_DIR):
 clean:
 	rm -rf build/
 
-#--------------------------------------------------------------------------------------
-
-TESTS_IN = $(sort $(wildcard $(TEST_DIR)/*.in))
-TESTS_NAMES = $(TESTS_IN:$(TEST_DIR)/%.in=%)
-TESTS_OUT = $(sort $(wildcard $(TEST_DIR)/*.out))
-SORT_OUT = $(TESTS_OUT:$(TEST_DIR)/%=$(BUILD_DIR)/%)
-
 check: $(BUILD_DIR)/log
 	@exit $$(cat $<)
 
@@ -47,5 +45,3 @@ $(BUILD_DIR)/log: $(EXEC) $(TESTS_IN) $(TESTS_OUT)
 	  fi \
 	done ;\
 	echo $$test_check > $@
-
-
