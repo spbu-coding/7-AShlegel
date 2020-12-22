@@ -14,17 +14,18 @@ TESTS_NAMES = $(TESTS_IN:$(TEST_DIR)/%.in=%)
 TESTS_OUT = $(sort $(wildcard $(TEST_DIR)/*.out))
 SORT_OUT = $(TESTS_OUT:$(TEST_DIR)/%=$(BUILD_DIR)/%)
 
-.PHONY: clean $(BUILD_DIR) all check
+.PHONY: clean all check
 
-all: $(BUILD_DIR) $(EXEC) check
+all: $(EXEC)
 
-$(OBJECTS): $(SOURCES)
-	$(CC) -c $(CFLAGS) -o $@ $^
+$(OBJECTS): $(SOURCES) | $(BUILD_DIR)
+
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 $(EXEC): $(OBJECTS)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $<
 
-$(BUILD_DIR):
+$(BUILD_DIR): $(SOURCES)
 	mkdir -p $@
 
 clean:
