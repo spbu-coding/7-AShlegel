@@ -38,7 +38,7 @@ check: $(TEST_LOG)
 	for test in $(TESTS_NAMES) ; do \
 		if [ "$$(cat $(BUILD_DIR)/$$test.log)" = "1" ] ; then \
 			echo test $$test failed ; \
-			test_check+=1 ; \
+			test_check=1 ; \
 		else \
 			echo test $$test passed ; \
 		fi \
