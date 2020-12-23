@@ -29,7 +29,7 @@ $(BUILD_DIR): $(SOURCES)
 	@mkdir -p $@
 
 clean:
-	rm -rf build/
+	$(RM) -r $(BUILD_DIR)/
 
 check: $(TEST_LOG)
 	@test_check=0 ; \
