@@ -16,6 +16,8 @@ SORT_OUT = $(TESTS_OUT:$(TEST_DIR)/%=$(BUILD_DIR)/%)
 TEST_LOG = $(TESTS_OUT:$(TEST_DIR)/%.out=$(BUILD_DIR)/%.log)
 
 .PHONY: clean all check
+.INTERMEDIATE: $(OBJECTS) $(SORT_OUT)
+.SECONDARY: $(EXEC) $(TEST_LOG)
 
 all: $(EXEC)
 
