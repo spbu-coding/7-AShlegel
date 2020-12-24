@@ -5,9 +5,10 @@ LD = gcc
 CFLAGS = -g -O2 -Wall -Wextra -Wpedantic -Werror
 LDFLAGS =
 
+SOURCE_NAME = sorter
 EXEC = $(BUILD_DIR)/$(NAME)
-SOURCES = $(SOURCE_DIR)/$(NAME).c
-OBJECTS = $(EXEC).o
+SOURCES = $(SOURCE_DIR)/$(SOURCE_NAME).c
+OBJECTS = $(SOURCE_DIR)/$(SOURCE_NAME).o
 
 TESTS_IN = $(sort $(wildcard $(TEST_DIR)/*.in))
 TESTS_NAMES = $(TESTS_IN:$(TEST_DIR)/%.in=%)
@@ -16,8 +17,6 @@ SORT_OUT = $(TESTS_OUT:$(TEST_DIR)/%=$(BUILD_DIR)/%)
 TEST_LOG = $(TESTS_OUT:$(TEST_DIR)/%.out=$(BUILD_DIR)/%.log)
 
 .PHONY: clean all check
-.INTERMEDIATE: $(OBJECTS) $(SORT_OUT)
-.SECONDARY: $(EXEC) $(TEST_LOG)
 
 all: $(EXEC)
 
